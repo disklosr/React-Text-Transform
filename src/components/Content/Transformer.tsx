@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 export interface Props {
   outputText: string
@@ -18,51 +19,56 @@ export interface State {
 class Transformer extends React.Component<Props, State> {
 
   handleChange = (event: any) => {
-    this.setState({value: event.target.value} as State)
+    this.setState({ value: event.target.value } as State)
   }
 
   render() {
     const { outputText, onTransform } = this.props;
 
     return (
-    <div>
-      <AppBar
-        title="Email Parser"
-        iconElementRight={<FlatButton label="Transform" onClick={() => onTransform(this.state.value)} />}
-      />
-      <div className="main-content">
-        <Card>
-          <CardHeader title="Input" />
-          <CardText>
-            <TextField
-              hintText="Paste in an email message in html format"
-              multiLine={true}
-              fullWidth={true}
-              rows={5}
-              onChange={this.handleChange}
-            />
-          </CardText>
-        </Card>
-        <br />
-        <br />
-        <Card>
-          <CardHeader title="Output" />
-          <div>
-            <CardText>
-              <TextField
-                hintText="Paste in an email message in html format"
-                multiLine={true}
-                fullWidth={true}
-                disabled={true}
-                rows={5}
-                value={outputText}
-              />
-            </CardText>
-          </div>
-        </Card>
+      <div>
+        <AppBar
+          title="Email Parser"
+          iconElementRight={<FlatButton label="Transform" onClick={() => onTransform(this.state.value)} />}
+        />
+        <div className="main-content">
+          <Grid fluid>
+            <Row>
+              <Col xs>
+                <Card>
+                  <CardHeader title="Input" />
+                  <CardText>
+                    <TextField
+                      hintText="Paste in an email message in html format"
+                      multiLine={true}
+                      fullWidth={true}
+                      rows={5}
+                      onChange={this.handleChange}
+                    />
+                  </CardText>
+                </Card>
+              </Col>
+
+              <Col xs>
+                <Card>
+                  <CardHeader title="Output" />
+                    <CardText>
+                      <TextField
+                        hintText="Paste in an email message in html format"
+                        multiLine={true}
+                        fullWidth={true}
+                        disabled={true}
+                        rows={5}
+                        value={outputText}
+                      />
+                    </CardText>
+                </Card>
+              </Col>
+            </Row>
+          </Grid>
+        </div>
       </div>
-    </div>
-  );
+    );
   }
 }
 

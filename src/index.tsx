@@ -14,7 +14,7 @@ import './index.css';
 import Transformer from './containers/Transformer';
 
 const store = createStore<StoreState>(transform, {
-  outputText: 'hello'
+  outputText: ''
 });
 
 ReactDOM.render(

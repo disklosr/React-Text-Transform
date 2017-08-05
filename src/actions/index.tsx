@@ -25,12 +25,12 @@ export function decrementEnthusiasm(): DecrementEnthusiasm {
 
 //***************************//
 
-export interface TransformText{
+export interface TransformText {
     type: constants.TRANSFORM_TEXT
     textToTransform: string
 }
 
-export function transformText(text: string): TransformText{
+export function transformText(text: string): TransformText {
     return {
         type: constants.TRANSFORM_TEXT,
         textToTransform: text
