@@ -15,8 +15,29 @@ export interface State {
   value: string
 }
 
+const sampleEmail = 
+`
+Hello,
+
+This is a test email.
+
+Regards,
+
+Harry Potter
+Software Engineer
+Microsoft
+14 Rue Amber, Paris, France
++33 6 45 56 67 67
+http://github.com/talon
+`;
+
 
 class Transformer extends React.Component<Props, State> {
+
+  constructor(props: any){
+    super(props);
+    this.state = { value: sampleEmail };
+  }
 
   handleChange = (event: any) => {
     this.setState({ value: event.target.value } as State)
@@ -43,6 +64,7 @@ class Transformer extends React.Component<Props, State> {
                       multiLine={true}
                       fullWidth={true}
                       rows={5}
+                      value={this.state.value}
                       onChange={this.handleChange}
                     />
                   </CardText>
@@ -71,50 +93,5 @@ class Transformer extends React.Component<Props, State> {
     );
   }
 }
-
-/* function Transformer2({ inputText, outputText, onTransform }: Props) {
-  return (
-    <div>
-      <AppBar
-        title="Title"
-        iconElementRight={<FlatButton label="Transform" onClick={onTransform} />}
-      />
-      <div className="main-content">
-        <Card>
-          <CardHeader title="Input" />
-          <CardText>
-            <TextField
-              hintText="Paste in an email message in html format"
-              multiLine={true}
-              fullWidth={true}
-              rows={5}
-              value={inputText}
-            />
-          </CardText>
-        </Card>
-        <br />
-        <br />
-        <Card>
-          <CardHeader title="Output" />
-          <div>
-            <CardText>
-              <TextField
-                hintText="Paste in an email message in html format"
-                multiLine={true}
-                fullWidth={true}
-                disabled={true}
-                rows={5}
-                value={outputText}
-              />
-            </CardText>
-          </div>
-        </Card>
-        <div>
-          <RaisedButton onClick={onTransform} className="transform-button" primary={true} label="Transform" />
-        </div>
-      </div>
-    </div>
-  );
-} */
 
 export default Transformer;
