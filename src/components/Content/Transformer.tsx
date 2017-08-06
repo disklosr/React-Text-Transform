@@ -36,7 +36,7 @@ class Transformer extends React.Component<Props, State> {
             <Row>
               <Col xs>
                 <Card>
-                  <CardHeader title="Input" />
+                  <CardHeader title="Original Email" />
                   <CardText>
                     <TextField
                       hintText="Paste in an email message in html format"
@@ -51,7 +51,7 @@ class Transformer extends React.Component<Props, State> {
 
               <Col xs>
                 <Card>
-                  <CardHeader title="Output" />
+                  <CardHeader title="Cleaned up email" />
                     <CardText>
                       <TextField
                         hintText="Paste in an email message in html format"
