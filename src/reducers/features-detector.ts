@@ -116,8 +116,13 @@ export const suppotedFeatures = [
 ]
 
 export const detectFeaturesInText = function (lineOfText: string, language: string): Array<Features> {
-    if (language && stopwords[language] != null)
+    if (language && stopwords[language] != null){
         selectedStopWords = stopwords[language];
+    }
+    else{
+        console.log('warning: No stop words are defined for language ' + language)
+    }
+
 
     let detectedFeatures: Array<Features> = [];
 

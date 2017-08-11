@@ -8,7 +8,7 @@ const defaultLanguage = '   ';
 /** Score affected to each feature detected. The higher the score the higher the chance the line is a part of email signature and vice-versa */
 
 const featureScoreMap = new Map([
-    [Features.EMPTY_LINE, 1],
+    [Features.EMPTY_LINE, 0],
     [Features.PHONE, 5],
     [Features.EMAIL, 5],
     [Features.LINK, 5],
@@ -71,7 +71,7 @@ export const findMaxSumOfContiguousSubArray = function optimalSolution(arrIntege
 /** Extracts a possible signature block from an arbitrary text block */
 export default function extract(text: string): Array<string> {
     text = text.replace(/(^[ \t]*\n){2,}/gm, "\n");
-    let detectedLanguage = languageDetector.detect(text)[0] || defaultLanguage;
+    let detectedLanguage = languageDetector.detect(text)[0][0] || defaultLanguage;
     let featuresPerLine = text.split("\n").map(line => detectFeaturesInText(line, detectedLanguage));
     let scorePerLineArray = featuresPerLine.map(features => calculateLineScore(features));
     let { startIndex, endIndex } = findMaxSumOfContiguousSubArray(scorePerLineArray);
@@ -80,7 +80,7 @@ export default function extract(text: string): Array<string> {
 
 export function debug(text: string): string {
     text = text.replace(/(^[ \t]*\n){2,}/gm, "\n");
-    let detectedLanguage = languageDetector.detect(text)[0] || defaultLanguage;
+    let detectedLanguage = languageDetector.detect(text)[0][0] || defaultLanguage;
     let featuresPerLine = text.split("\n").map(line => detectFeaturesInText(line, detectedLanguage));
     let scorePerLineArray = featuresPerLine.map(features => calculateLineScore(features));
     let { startIndex, endIndex } = findMaxSumOfContiguousSubArray(scorePerLineArray);
@@ -107,7 +107,7 @@ export function debug(text: string): string {
     })
 
     
-    let returnValue = table.toString() + '\n' + 'start: ' + startIndex + '    end: ' + endIndex;
+    let returnValue = detectedLanguage + '\n' + table.toString() + '\n' + 'start: ' + startIndex + '    end: ' + endIndex;
     console.log(returnValue);
     return returnValue;
 }

@@ -28,6 +28,11 @@ it('should detects a french sentence', () => {
   expect(detected).toContain(Features.SENTENCE);
 })
 
+it('should not detect _no stop words_ feature in this sentence', () => {
+  var detected = detectFeaturesInText('Je vous confirme notre rendez-vous qui aura lieuà 18h30 le mardi 21 juin 2016', french);
+  expect(detected).not.toContain(Features.NO_STOP_WORDS);
+})
+
 it('correctly detects long lines', () => {
   var detected = detectFeaturesInText('Hello There! This is a very long line that is definetly not part of a signature', french);
   expect(detected).toContain(Features.LONG_LINE);
