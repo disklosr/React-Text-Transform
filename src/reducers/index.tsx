@@ -1,6 +1,6 @@
 import { TransformText } from '../actions';
 import { StoreState } from '../types/index';
-import extract from './extractor';
+import extract, {debug} from './extractor';
 
 export function transform(state: StoreState, action: TransformText): StoreState {
 
@@ -8,7 +8,8 @@ export function transform(state: StoreState, action: TransformText): StoreState 
     case 'TRANSFORM_TEXT':
       return { 
         ...state, 
-        outputText: extract(action.textToTransform).join("\n")
+        outputText: extract(action.textToTransform).join("\n"),
+        debugText: debug(action.textToTransform)
       };
   }
 

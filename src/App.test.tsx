@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {detectFeaturesInText} from './reducers/features-detector'
+import {detectFeaturesInText, Features} from './reducers/features-detector'
 import App from './App';
 
 it('renders without crashing', () => {
@@ -15,7 +15,7 @@ const unknownLanguage = 'zulu';
 
 it('correctly detects english sentence', () => {
   var detected = detectFeaturesInText('Hello There! My name is Anas and I am writing some tests', english);
-  expect(detected).toContain('SENTENCE');
+  expect(detected).toContain(Features.SENTENCE);
 })
 
 it('shouldnt detects sentence in wrong language', () => {
@@ -23,61 +23,68 @@ it('shouldnt detects sentence in wrong language', () => {
   expect(detected).toEqual([]);
 })
 
-it('shouldnt detects a french sentence', () => {
+it('should detects a french sentence', () => {
   var detected = detectFeaturesInText('Mon nom est Anas et je suis entrain de faire des tests', french);
-  expect(detected).toContain('SENTENCE');
+  expect(detected).toContain(Features.SENTENCE);
 })
 
 it('correctly detects long lines', () => {
   var detected = detectFeaturesInText('Hello There! This is a very long line that is definetly not part of a signature', french);
-  expect(detected).toContain('LONG_LINE');
+  expect(detected).toContain(Features.LONG_LINE);
 })
 
 
 it('correctly detects phone french', () => {
   var detected = detectFeaturesInText('Hello There! My name is +33 45 56 67 78 Anas and I am writing some tests', english);
-  expect(detected).toContain('PHONE');
+  expect(detected).toContain(Features.PHONE);
 })
 
 it('correctly detects phone american', () => {
   var detected = detectFeaturesInText('(345) 235 4576', english);
-  expect(detected).toContain('PHONE');
+  expect(detected).toContain(Features.PHONE);
 })
 
 it('correctly detects full name', () => {
   var detected = detectFeaturesInText('Eric Larson Garcia', english);
-  expect(detected).toContain('FULLNAME');
+  expect(detected).toContain(Features.FULL_NAME);
 })
 
 it('correctly detects email', () => {
   var detected = detectFeaturesInText('my email is pirhanas@windowslive.com of', english);
-  expect(detected).toContain('EMAIL');
+  expect(detected).toContain(Features.EMAIL);
 })
 
 it('correctly detects web link 1', () => {
-  var detected = detectFeaturesInText('www.linkedin.com/username', 'en');
-  expect(detected).toContain('LINK');
+  var detected = detectFeaturesInText('www.linkedin.com/username', english);
+  expect(detected).toContain(Features.LINK);
 })
 
 it('correctly detects empty lines', () => {
-  var detected = detectFeaturesInText('', 'en');
-  expect(detected).toContain('EMPTY_LINE');
+  var detected = detectFeaturesInText('', unknownLanguage);
+  expect(detected).toContain(Features.EMPTY_LINE);
 })
 
 it('correctly detects white space lines', () => {
-  var detected = detectFeaturesInText('     ', 'en');
-  expect(detected).toContain('EMPTY_LINE');
+  var detected = detectFeaturesInText('     ', unknownLanguage);
+  expect(detected).toContain(Features.EMPTY_LINE);
 })
 
 it('correctly detects a sentence with capital case', () => {
-  var detected = detectFeaturesInText('Official Revolut App', 'en');
-  expect(detected).toEqual(['CAPITAL_CASE', 'NO_STOP_WORDS']);
+  var detected = detectFeaturesInText('Official Revolut App', english);
+  expect(detected).toEqual([Features.CAPITAL_CASE, Features.NO_STOP_WORDS].sort());
 })
 
 it('correctly detects a sentence with no stop words', () => {
-  var detected = detectFeaturesInText('Dragon Tail Talon Hailey', 'en');
-  expect(detected).toContain('NO_STOP_WORDS');
+  var detected = detectFeaturesInText('Dragon Tail Talon Hailey', english);
+  expect(detected).toContain(Features.NO_STOP_WORDS);
 })
+
+it('correctly detects a double dash (start of signature block)', () => {
+  var detected = detectFeaturesInText('--  ', english);
+  expect(detected).toContain(Features.DOUBLE_DASH);
+})
+
+
 
 
 

@@ -4,14 +4,16 @@ import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 
 
-export function mapStateToProps({ outputText }: StoreState) {
+export function mapStateToProps({ outputText, debugText }: StoreState) {
   return {
-    outputText: outputText
+    outputText: outputText,
+    debugText: debugText
   }
 };
 
 interface StateProps{
   outputText: string
+  debugText: string
 }
 
 interface DispatchProps{

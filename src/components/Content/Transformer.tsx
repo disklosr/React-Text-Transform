@@ -8,6 +8,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 
 export interface Props {
   outputText: string
+  debugText: string
   onTransform: (text: string) => void;
 }
 
@@ -15,8 +16,8 @@ export interface State {
   value: string
 }
 
-const sampleEmail = 
-`
+const sampleEmail =
+  `
 Hello,
 
 This is a test email.
@@ -34,7 +35,7 @@ http://github.com/talon
 
 class Transformer extends React.Component<Props, State> {
 
-  constructor(props: any){
+  constructor(props: any) {
     super(props);
     this.state = { value: sampleEmail };
   }
@@ -44,7 +45,7 @@ class Transformer extends React.Component<Props, State> {
   }
 
   render() {
-    const { outputText, onTransform } = this.props;
+    const { outputText, debugText, onTransform } = this.props;
 
     return (
       <div>
@@ -59,7 +60,7 @@ class Transformer extends React.Component<Props, State> {
                 <Card>
                   <CardHeader title="Original Email" />
                   <CardText>
-                    <TextField
+                    <TextField id='debug-text'
                       hintText="Paste in an email message in html format"
                       multiLine={true}
                       fullWidth={true}
@@ -74,16 +75,36 @@ class Transformer extends React.Component<Props, State> {
               <Col xs>
                 <Card>
                   <CardHeader title="Cleaned up email" />
-                    <CardText>
-                      <TextField
-                        hintText="Paste in an email message in html format"
-                        multiLine={true}
-                        fullWidth={true}
-                        disabled={true}
-                        rows={5}
-                        value={outputText}
-                      />
-                    </CardText>
+                  <CardText>
+                    <TextField
+                      hintText="Paste in an email message in html format"
+                      multiLine={true}
+                      fullWidth={true}
+                      disabled={true}
+                      rows={5}
+                      value={outputText}
+                    />
+                  </CardText>
+                </Card>
+              </Col>
+            </Row>
+            <div style={{height: '18px'}}/>
+            <Row>
+              <Col xs={12}>
+                <Card>
+                  <CardHeader title="Debug info" />
+                  <CardText>
+                    <TextField
+                      style={{
+                        fontFamily: 'monospace'
+                      }}
+                      multiLine={true}
+                      fullWidth={true}
+                      disabled={true}
+                      rows={5}
+                      value={debugText}
+                    />
+                  </CardText>
                 </Card>
               </Col>
             </Row>
