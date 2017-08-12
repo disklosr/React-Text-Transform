@@ -17,7 +17,8 @@ const featureScoreMap = new Map([
     [Features.SENTENCE, -2],
     [Features.NO_STOP_WORDS, 2],
     [Features.CAPITAL_CASE, 2],
-    [Features.DOUBLE_DASH, -50]
+    [Features.DOUBLE_DASH, -50],
+    [Features.ENDS_WITH_PUNCTUATION, -10]
 ]);
 
 

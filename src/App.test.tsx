@@ -49,9 +49,35 @@ it('correctly detects phone american', () => {
   expect(detected).toContain(Features.PHONE);
 })
 
-it('correctly detects full name', () => {
+it('correctly detects full name via nlp analysis', () => {
   var detected = detectFeaturesInText('Eric Larson Garcia', english);
   expect(detected).toContain(Features.FULL_NAME);
+})
+
+it('correctly detects full name via nlp analysis with a dot at the end', () => {
+  var detected = detectFeaturesInText('Eric Larson Garcia.', english);
+  expect(detected).toContain(Features.FULL_NAME);
+})
+
+it('correctly detects full name via case analysis', () => {
+  var detected = detectFeaturesInText('Shaiba BUTT', english);
+  expect(detected).toContain(Features.FULL_NAME);
+})
+
+it('shouldnt get confused with numbers when detecting names' , () => {
+  var detected = detectFeaturesInText('my phone is 98 76 87 65.', english);
+  expect(detected).not.toContain(Features.FULL_NAME);
+})
+
+it('shouldnt get confused with numbers when detecting capital case' , () => {
+  var detected = detectFeaturesInText('Tel 98 76 87 65.', english);
+  expect(detected).not.toContain(Features.CAPITAL_CASE);
+})
+
+
+it('shouldnt detect name when word contains accentuated char' , () => {
+  var detected = detectFeaturesInText('VÉLIB', english);
+  expect(detected).not.toContain(Features.FULL_NAME);
 })
 
 it('correctly detects email', () => {

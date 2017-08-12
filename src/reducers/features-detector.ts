@@ -12,6 +12,7 @@ let selectedStopWords = stopwords.english;
 
 const maxLengthOfSignatureLine = 60;
 
+const digitsRegex = /\d+/;
 const phoneRegex = /\+?\(?\d*\)? ?\(?\d+\)?\d*([\s.\-]\d{2,})+/g;
 const emailRegex = /\b[a-z0-9-_.]+@[a-z0-9-_.]+(\.[a-z0-9]+)+/i;
 const urlRegex = new RegExp(/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/, 'gi')
@@ -26,11 +27,12 @@ export enum Features {
     SENTENCE = 'SENTENCE',
     NO_STOP_WORDS = 'NO_STOP_WORDS',
     CAPITAL_CASE = 'CAPITAL_CASE',
-    DOUBLE_DASH = 'DOUBLE_DASH'
+    DOUBLE_DASH = 'DOUBLE_DASH',
+    ENDS_WITH_PUNCTUATION = 'ENDS_WITH_PUNCTUATION'
 }
 
 const FEATURE_EMPTY_LINE = { 
-    name: Features.EMPTY_LINE, 
+    name: Features.EMPTY_LINE,
     test: (line: string) => !line.trim() 
 };
 
@@ -58,7 +60,23 @@ const FEATURE_FULL_NAME = {
     name: Features.FULL_NAME, 
     test: (line: string) => {
         let foundName = nlp(line).people().out('array');
-        return foundName && foundName[0] == line.toLowerCase();
+        let foundNameViaNlp = foundName.length > 0;
+
+        if(foundNameViaNlp) 
+            return true;
+
+        let tokens = tokenizer.tokenize(line).filter((token: string) => !digitsRegex.test(token));
+        if(tokens.length < 2)
+            return false;
+        let lastToken = tokens[tokens.length - 1];
+        return lastToken.toUpperCase() == lastToken;
+    }
+};
+
+const ENDS_WITH_PUNCTUATION = {
+    name: Features.ENDS_WITH_PUNCTUATION, 
+    test: (line: string) => {
+        return /[,!:]$/.test(line);
     }
 };
 
@@ -81,10 +99,12 @@ const FEATURE_SENTENCE = {
 const FEATURE_CAPITAL_CASE = {
     name: Features.CAPITAL_CASE, 
     test: (line: string) => {
-        let tokens: Array<string> = tokenizer.tokenize(line);
-        if(tokens.length < 3) 
+        let words: Array<string> = tokenizer.tokenize(line).filter((token: string) => !digitsRegex.test(token));
+        let tokensWithoutStopWords = words.filter((token: string) => { return selectedStopWords.indexOf(token.toLowerCase()) < 0 });
+
+        if(words.length < 3)
             return false;
-        let firstLetters = tokens.map(token => token[0]).join('');
+        let firstLetters = tokensWithoutStopWords.map(token => token[0]).join('');
         return firstLetters.toUpperCase() == firstLetters;
     }
 };
@@ -112,7 +132,8 @@ export const suppotedFeatures = [
     FEATURE_SENTENCE,
     FEATURE_NO_STOP_WORDS,
     FEATURE_CAPITAL_CASE,
-    FEATURE_DOUBLE_DASH
+    FEATURE_DOUBLE_DASH,
+    ENDS_WITH_PUNCTUATION
 ]
 
 export const detectFeaturesInText = function (lineOfText: string, language: string): Array<Features> {
@@ -125,6 +146,7 @@ export const detectFeaturesInText = function (lineOfText: string, language: stri
 
 
     let detectedFeatures: Array<Features> = [];
+    lineOfText = lineOfText.trim();
 
     suppotedFeatures.forEach(feature => {
         if(feature.test(lineOfText))
