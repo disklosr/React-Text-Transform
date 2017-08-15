@@ -11,7 +11,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
-import Transformer from './containers/Transformer';
+import App from './App';
 
 const store = createStore<StoreState>(transform, {
   outputText: '',
@@ -21,7 +21,7 @@ const store = createStore<StoreState>(transform, {
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <Transformer />
+      <App />
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root') as HTMLElement

@@ -1,4 +1,4 @@
-import Transformer from '../components/Content/Transformer';
+import Transformer from '../components/Transformer';
 import * as actions from '../actions/';
 import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
@@ -17,7 +17,7 @@ interface StateProps{
 }
 
 interface DispatchProps{
-  (txt: string): void
+  (text: string): void
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.TransformText>) {

@@ -3,7 +3,7 @@ import './Transformer.css';
 import AppBar from 'material-ui/AppBar';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 export interface Props {
@@ -25,11 +25,13 @@ This is a test email.
 Regards,
 
 Harry Potter
-Software Engineer
+Software Wizard
 Microsoft
 14 Rue Amber, Paris, France
 +33 6 45 56 67 67
 http://github.com/talon
+
+This line should not be captured as it is not a part of the signature.
 `;
 
 
@@ -50,8 +52,13 @@ class Transformer extends React.Component<Props, State> {
     return (
       <div>
         <AppBar
-          title="Email Parser"
-          iconElementRight={<FlatButton label="Transform" onClick={() => onTransform(this.state.value)} />}
+          style={{position: 'fixed', top: 0}}
+          title="Spotd"
+          iconElementRight={
+            <div>
+              <RaisedButton label="View On Github" primary={false} style={{margin: 6}} href="https://github.com/disklosr/spotd" />
+              <RaisedButton label="Extract Signature" secondary={true} style={{margin: 6}} onClick={() => onTransform(this.state.value)} />
+            </div>}
         />
         <div className="main-content">
           <Grid fluid>
@@ -71,10 +78,10 @@ class Transformer extends React.Component<Props, State> {
                   </CardText>
                 </Card>
               </Col>
-
+              <div style={{height: '18px'}}/>
               <Col xs>
                 <Card>
-                  <CardHeader title="Cleaned up email" />
+                  <CardHeader title="Extracted Signature" />
                   <CardText>
                     <TextField
                       hintText="Paste in an email message in html format"
@@ -88,7 +95,7 @@ class Transformer extends React.Component<Props, State> {
                 </Card>
               </Col>
             </Row>
-            <div style={{height: '18px'}}/>
+            <div className="separator"/>
             <Row>
               <Col xs={12}>
                 <Card>
@@ -96,6 +103,7 @@ class Transformer extends React.Component<Props, State> {
                   <CardText>
                     <TextField
                       style={{
+                        fontSize: 12,
                         fontFamily: 'monospace'
                       }}
                       multiLine={true}

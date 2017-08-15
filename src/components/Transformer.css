@@ -1,0 +1,12 @@
+.main-content{
+    margin: 48px;
+    margin-top: 96px;
+}
+
+.separator{
+    margin-top: 18px
+}
+
+.app-header{
+    position: fixed
+}
